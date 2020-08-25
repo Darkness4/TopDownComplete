@@ -9,8 +9,6 @@
     <RootNamespace>TopDownComplete</RootNamespace>
     <AssemblyName>Top Down Complete</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <LangVersion>8.0</LangVersion>
-    <Nullable>enable</Nullable>
     <GodotProjectGeneratorVersion>1.0.0.0</GodotProjectGeneratorVersion>
     <BaseIntermediateOutputPath>.mono\temp\obj</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)\$(Configuration)</IntermediateOutputPath>
@@ -49,24 +47,20 @@
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
     <Reference Include="GodotSharp">
+      <HintPath>$(ProjectDir)\.mono\assemblies\$(ApiConfiguration)\GodotSharp.dll</HintPath>
       <Private>False</Private>
-      <HintPath>$(ProjectDir)/.mono/assemblies/$(ApiConfiguration)/GodotSharp.dll</HintPath>
     </Reference>
     <Reference Include="GodotSharpEditor" Condition=" '$(Configuration)' == 'Debug' ">
+      <HintPath>$(ProjectDir)\.mono\assemblies\$(ApiConfiguration)\GodotSharpEditor.dll</HintPath>
       <Private>False</Private>
-      <HintPath>$(ProjectDir)/.mono/assemblies/$(ApiConfiguration)/GodotSharpEditor.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Entities\Bullet\Bullet.cs" />
-    <Compile Include="Entities\Weapon\Weapon.cs" />
+    <Compile Include="Scripts\Bullet.cs" />
     <Compile Include="Scripts\BulletManager.cs" />
-    <Compile Include="Entities\Enemy\Enemy.cs" />
-    <Compile Include="Entities\Health\Health.cs" />
-    <Compile Include="Scripts\Utils\Counter.cs" />
     <Compile Include="Scripts\Main.cs" />
-    <Compile Include="Entities\Player\Player.cs" />
+    <Compile Include="Scripts\Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

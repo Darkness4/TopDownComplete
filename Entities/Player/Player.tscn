@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://Scripts/Player.cs" type="Script" id=1]
+[ext_resource path="res://Entities/Player/Player.cs" type="Script" id=1]
 [ext_resource path="res://assets/topdown-shooter/Spritesheet/spritesheet_characters.png" type="Texture" id=2]
+[ext_resource path="res://Entities/Weapon/Weapon.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Entities/Health/Health.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 12.0
@@ -19,8 +21,7 @@ region_rect = Rect2( 0, 0, 58, 43 )
 shape = SubResource( 1 )
 one_way_collision_margin = 0.0
 
-[node name="EndOfGunPosition2D" type="Position2D" parent="."]
-position = Vector2( 42, 9.5 )
+[node name="Weapon" parent="." instance=ExtResource( 3 )]
+position = Vector2( 27, 10 )
 
-[node name="GunDirectionPosition2D" type="Position2D" parent="."]
-position = Vector2( 47.399, 9.5 )
+[node name="Health" parent="." instance=ExtResource( 4 )]
