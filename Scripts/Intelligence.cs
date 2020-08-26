@@ -129,7 +129,7 @@ public class Intelligence : Node2D
     {
         _targets.Remove((KinematicBody2D)body);
 
-        if (_targets.Count == 0)
+        if (_targets.Count == 0 && CurrentState != State.UNITIALIZED)
         {
             CurrentState = State.PATROL;
         }

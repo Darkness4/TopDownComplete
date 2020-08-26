@@ -51,6 +51,7 @@ public class Actor : RealisticBody2D, ITeamed, IHittable
     /// </summary>
     public void Die()
     {
+        _intelligence.CurrentState = State.UNITIALIZED;
         QueueFree();
     }
 }
