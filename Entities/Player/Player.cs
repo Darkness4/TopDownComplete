@@ -44,6 +44,10 @@ public class Player : KinematicBody2D, ITeamed, IHittable
         {
             _weapon.Shoot();
         }
+        else if (@event.IsActionPressed("reload"))
+        {
+            _weapon.StartReload();
+        }
     }
 
     /// <summary>

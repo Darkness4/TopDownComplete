@@ -13,5 +13,9 @@ public class GlobalSignals : Node
     /// A bullet has been fired with the following parameters.
     /// </summary>
     [Signal]
-    public delegate void BulletFired(Vector2 position, Vector2 direction, TeamName teamName = TeamName.UNDEFINED);
+    public delegate void BulletFired(
+        Vector2 position,
+        Vector2 direction,
+        TeamName teamName = TeamName.UNDEFINED
+    );
 }

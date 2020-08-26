@@ -3,7 +3,7 @@ using Godot;
 /// <summary>
 /// Defines the <c>Ally</c> behavior.
 /// </summary>
-public class Ally : RealisticBody2D, ITeamed
+public class Ally : RealisticBody2D, ITeamed, IHittable
 {
     private Health _health = null!;
     private Weapon _weapon = null!;
@@ -25,6 +25,8 @@ public class Ally : RealisticBody2D, ITeamed
         _health.Connect(nameof(Health.IsZero), this, nameof(Die));
 
         _weapon = GetNode<Weapon>("Weapon");
+        _weapon.Initialize(_teamName);
+
         _lineOfSight = GetNode<RayCast2D>("LineOfSight");
         _intelligence = GetNode<Intelligence>("Intelligence");
 

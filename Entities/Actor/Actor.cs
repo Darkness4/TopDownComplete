@@ -1,9 +1,9 @@
 using Godot;
 
 /// <summary>
-/// Defines the <c>Enemy</c> behavior.
+/// Defines the <c>Actor</c> behavior.
 /// </summary>
-public class Enemy : RealisticBody2D, ITeamed, IHittable
+public class Actor : RealisticBody2D, ITeamed, IHittable
 {
     private Health _health = null!;
     private Weapon _weapon = null!;
@@ -38,16 +38,16 @@ public class Enemy : RealisticBody2D, ITeamed, IHittable
     }
 
     /// <summary>
-    /// <c>Enemy</c> is hit by an object.
+    /// <c>Actor</c> is hit by an object.
     /// </summary>
     public void HandleHit()
     {
         _health.Decrease();
-        GD.Print($"Enemy: {_health}");
+        GD.Print($"Actor: {_health}");
     }
 
     /// <summary>
-    /// Kill the <c>Enemy</c>.
+    /// Kill the <c>Actor</c>.
     /// </summary>
     public void Die()
     {

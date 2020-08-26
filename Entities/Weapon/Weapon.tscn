@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Entities/Weapon/Weapon.cs" type="Script" id=1]
 [ext_resource path="res://assets/topdown-tanks/Spritesheet/onlyObjects_default.png" type="Texture" id=2]
@@ -33,6 +33,36 @@ tracks/1/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 0.5, 1.2 ) ]
 }
 
+[sub_resource type="Animation" id=2]
+resource_name = "Reload"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1.5, 2 ),
+"transitions": PoolRealArray( 9.51364, 1, 9, 1 ),
+"update": 0,
+"values": [ 0.0, -90.0, -90.0, 0.0 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "StopReload"
+} ]
+}
+
 [node name="Weapon" type="Node2D"]
 script = ExtResource( 1 )
 
@@ -50,12 +80,14 @@ one_shot = true
 visible = false
 position = Vector2( 24, 0 )
 rotation = -1.5708
+scale = Vector2( 0.5, 1.2 )
 texture = ExtResource( 2 )
 region_enabled = true
 region_rect = Rect2( 324, 334, 20, 25 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/MuzzleFlash = SubResource( 1 )
+anims/Reload = SubResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 3 )

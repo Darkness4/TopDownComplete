@@ -53,7 +53,6 @@ public class Bullet : Area2D
     /// </summary>
     public void _on_Bullet_body_entered(Node body)
     {
-        QueueFree();
         if (
           body is IHittable hittable &&
           body is ITeamed teamed &&
@@ -62,5 +61,6 @@ public class Bullet : Area2D
         {
             hittable.HandleHit();
         }
+        QueueFree();
     }
 }

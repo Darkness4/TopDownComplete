@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public enum State
 {
@@ -18,7 +19,7 @@ public class Intelligence : Node2D
 
     private const int PATROL_RANGE = 100;
 
-    private KinematicBody2D? _target = null;
+    private LinkedList<KinematicBody2D> _targets = new LinkedList<KinematicBody2D>();
 
     private Vector2 _origin = Vector2.Zero;
     private Vector2 _patrolLocation = Vector2.Zero;
@@ -57,7 +58,15 @@ public class Intelligence : Node2D
         _actor = actor;
         _weapon = weapon;
         _lineOfSight = lineOfSight;
+
+        _weapon.Connect(nameof(Weapon.OutOfAmmo), this, nameof(HandleReload));
     }
+
+    public void HandleReload()
+    {
+        _weapon.StartReload();
+    }
+
 
     public override void _Ready()
     {
@@ -85,9 +94,11 @@ public class Intelligence : Node2D
                 }
                 break;
             case State.ENGAGE:
-                if (_target != null)
+                if (_targets.Count != 0)
                 {
-                    _actor.RotateToward(_target.GlobalPosition);
+                    var target = _targets.First.Value;
+
+                    _actor.RotateToward(target.GlobalPosition);
                     if (_lineOfSight.GetCollider() is ITeamed teamedTarget &&
                         _actor is ITeamed teamedActor &&
                         !teamedTarget.TeamName.Equals(teamedActor.TeamName)
@@ -110,16 +121,17 @@ public class Intelligence : Node2D
         )
         {
             CurrentState = State.ENGAGE;
-            _target = (KinematicBody2D)body;
+            _targets.AddLast((KinematicBody2D)body);
         }
     }
 
     public void _on_DetectionZone_body_exited(Node body)
     {
-        if (_target != null && body == _target)
+        _targets.Remove((KinematicBody2D)body);
+
+        if (_targets.Count == 0)
         {
             CurrentState = State.PATROL;
-            _target = null;
         }
     }
 

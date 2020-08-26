@@ -65,7 +65,7 @@
     <Compile Include="Scripts\Utils\ITeam.cs" />
     <Compile Include="Entities\Weapon\Weapon.cs" />
     <Compile Include="Scripts\BulletManager.cs" />
-    <Compile Include="Entities\Enemy\Enemy.cs" />
+    <Compile Include="Entities\Actor\Actor.cs" />
     <Compile Include="Entities\Ally\Ally.cs" />
     <Compile Include="Entities\Health\Health.cs" />
     <Compile Include="Scripts\Globals\GlobalSignals.cs" />
