@@ -18,7 +18,7 @@ region_enabled = true
 region_rect = Rect2( 1472, 256, 64, 64 )
 
 [node name="CaptureTimer" type="Timer" parent="."]
-wait_time = 10.0
+wait_time = 5.0
 one_shot = true
 [connection signal="body_entered" from="." to="." method="_on_CapturableBase_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_CapturableBase_body_exited"]

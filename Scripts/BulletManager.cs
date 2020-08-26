@@ -3,7 +3,7 @@ using Godot;
 /// <summary>
 /// Manages all in-game bullet.
 /// </summary>
-public class BulletManager : Node2D
+public class BulletManager : Node
 {
     [Export]
     private PackedScene _bullet = null!;

@@ -2,6 +2,5 @@
 
 [ext_resource path="res://Entities/Health/Health.cs" type="Script" id=1]
 
-
-[node name="Health" type="Node2D"]
+[node name="Health" type="Node"]
 script = ExtResource( 1 )

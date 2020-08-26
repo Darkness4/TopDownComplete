@@ -20,10 +20,10 @@ public class Weapon : Node2D
 
     public override void _Ready()
     {
-        _endOfGun = GetNode<Position2D>("EndOfGunPosition2D");
-        _gunDirection = GetNode<Position2D>("GunDirectionPosition2D");
-        _attackCooldown = GetNode<Timer>("AttackCooldown");
-        _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+        _endOfGun = GetNode<Position2D>("EndOfGunPosition2D")!;
+        _gunDirection = GetNode<Position2D>("GunDirectionPosition2D")!;
+        _attackCooldown = GetNode<Timer>("AttackCooldown")!;
+        _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer")!;
     }
 
     /// <summary>

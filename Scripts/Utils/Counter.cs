@@ -3,7 +3,7 @@ using Godot;
 /// <summary>
 /// A <c>Node2D</c> <c>Counter</c> class equipped with signals.
 /// </summary>
-public abstract class Counter : Node2D
+public abstract class Counter : Node
 {
     [Export]
     private int _value = 2;

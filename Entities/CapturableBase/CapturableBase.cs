@@ -49,8 +49,8 @@ public class CapturableBase : Area2D, ITeamed
 
     public override void _Ready()
     {
-        _captureTimer = GetNode<Timer>("CaptureTimer");
-        _sprite = GetNode<Sprite>("Sprite");
+        _captureTimer = GetNode<Timer>("CaptureTimer")!;
+        _sprite = GetNode<Sprite>("Sprite")!;
     }
 
     public void _on_CapturableBase_body_entered(Node body)
@@ -106,7 +106,11 @@ public class CapturableBase : Area2D, ITeamed
         {
             GD.Print($"{majorityTeam} is capturing");
             _capturingTeam = majorityTeam;
-            _captureTimer.Start();
+
+            if (_captureTimer.IsStopped())
+            {
+                _captureTimer.Start();
+            }
         }
     }
 

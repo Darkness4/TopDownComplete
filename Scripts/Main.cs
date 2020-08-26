@@ -10,8 +10,8 @@ public class Main : Node2D
 
     public override void _Ready()
     {
-        _bulletManager = GetNode<BulletManager>("BulletManager");
-        _player = GetNode<Player>("Player");
+        _bulletManager = GetNode<BulletManager>("BulletManager")!;
+        _player = GetNode<Player>("Player")!;
 
         GlobalSignals.Instance.Connect(
             nameof(GlobalSignals.BulletFired),

@@ -27,10 +27,10 @@ public class Player : KinematicBody2D, ITeamed, IHittable, IUnit
 
     public override async void _Ready()
     {
-        _health = GetNode<Health>("Health");
+        _health = GetNode<Health>("Health")!;
         _health.Connect(nameof(Health.IsZero), this, nameof(Die));
 
-        _weapon = GetNode<Weapon>("Weapon");
+        _weapon = GetNode<Weapon>("Weapon")!;
         _weapon.Initialize(_teamName);
 
         await ToSignal(GetTree(), "idle_frame");

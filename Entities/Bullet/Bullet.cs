@@ -38,7 +38,7 @@ public class Bullet : Area2D
 
     public override void _Ready()
     {
-        _killTimer = GetNode<Timer>("KillTimer");
+        _killTimer = GetNode<Timer>("KillTimer")!;
         _killTimer.Start();
     }
 

@@ -1,16 +1,13 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Entities/Weapon/Weapon.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/topdown-shooter/Spritesheet/spritesheet_characters.png" type="Texture" id=2]
 [ext_resource path="res://Entities/Actor/Actor.cs" type="Script" id=3]
 [ext_resource path="res://Entities/Health/Health.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scripts/Intelligence.cs" type="Script" id=5]
+[ext_resource path="res://Entities/Intelligence/Intelligence.tscn" type="PackedScene" id=5]
 
 [sub_resource type="CapsuleShape2D" id=1]
 radius = 12.0
-
-[sub_resource type="CircleShape2D" id=2]
-radius = 200.0
 
 [node name="Ally" type="KinematicBody2D" groups=[
 "enemy",
@@ -29,7 +26,7 @@ shape = SubResource( 1 )
 one_way_collision_margin = 0.0
 
 [node name="Weapon" parent="." instance=ExtResource( 1 )]
-position = Vector2( 27, 10 )
+position = Vector2( 26, 10 )
 
 [node name="Health" parent="." instance=ExtResource( 4 )]
 
@@ -37,17 +34,4 @@ position = Vector2( 27, 10 )
 enabled = true
 cast_to = Vector2( 1000, 0 )
 
-[node name="Intelligence" type="Node2D" parent="."]
-script = ExtResource( 5 )
-
-[node name="DetectionZone" type="Area2D" parent="Intelligence"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Intelligence/DetectionZone"]
-shape = SubResource( 2 )
-
-[node name="PatrolTimer" type="Timer" parent="Intelligence"]
-wait_time = 3.0
-one_shot = true
-[connection signal="body_entered" from="Intelligence/DetectionZone" to="Intelligence" method="_on_DetectionZone_body_entered"]
-[connection signal="body_exited" from="Intelligence/DetectionZone" to="Intelligence" method="_on_DetectionZone_body_exited"]
-[connection signal="timeout" from="Intelligence/PatrolTimer" to="Intelligence" method="_on_PatrolTimer_timeout"]
+[node name="Intelligence" parent="." instance=ExtResource( 5 )]
