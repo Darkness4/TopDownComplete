@@ -10,14 +10,15 @@ rotation = 1.5708
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 0, 8 )
+position = Vector2( 0, -220 )
 scale = Vector2( 0.5, 8 )
 texture = ExtResource( 1 )
 region_enabled = true
 region_rect = Rect2( 370, 0, 8, 26 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2( 0.25, 11.386 )
+position = Vector2( 0, -500 )
+scale = Vector2( 0.5, 25 )
 shape = SubResource( 1 )
 
 [node name="KillTimer" type="Timer" parent="."]

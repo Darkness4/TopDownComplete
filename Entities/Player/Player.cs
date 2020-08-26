@@ -3,10 +3,17 @@ using Godot;
 /// <summary>
 /// Defines the <c>Player</c> behavior.
 /// </summary>
-public class Player : KinematicBody2D
+public class Player : KinematicBody2D, ITeamed, IHittable
 {
     private Health _health = null!;
     private Weapon _weapon = null!;
+
+    [Export]
+    private TeamName _teamName = TeamName.PLAYER;
+    public TeamName TeamName
+    {
+        get => _teamName;
+    }
 
     private const int SPEED = 200;
     private const float FRICTION = 0.2f;
@@ -14,22 +21,13 @@ public class Player : KinematicBody2D
 
     private Vector2 _velocity = Vector2.Zero;
 
-    /// <summary>
-    /// <c>Player</c> fired a bullet with the following parameters.
-    /// </summary>
-    [Signal]
-    public delegate void PlayerFiredBullet(
-      Vector2 position,
-      Vector2 direction
-    );
-
     public override async void _Ready()
     {
         _health = GetNode<Health>("Health");
         _health.Connect(nameof(Health.IsZero), this, nameof(Die));
 
         _weapon = GetNode<Weapon>("Weapon");
-        _weapon.Connect(nameof(Weapon.FiredBullet), this, nameof(Shoot));
+        _weapon.Initialize(_teamName);
 
         await ToSignal(GetTree(), "idle_frame");
     }
@@ -96,13 +94,5 @@ public class Player : KinematicBody2D
             _velocity = _velocity.LinearInterpolate(Vector2.Zero, FRICTION);
         }
         _velocity = MoveAndSlide(_velocity);
-    }
-
-    private void Shoot(
-      Vector2 position,
-      Vector2 direction
-    )
-    {
-        EmitSignal(nameof(PlayerFiredBullet), position, direction);
     }
 }

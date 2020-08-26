@@ -6,19 +6,21 @@ using Godot;
 public class BulletManager : Node2D
 {
     [Export]
-    private PackedScene? _bullet;
+    private PackedScene _bullet = null!;
 
     /// <summary>
     /// Spawn a bullet
     /// </summary>
     public void SpawnBullet(
       Vector2 position,
-      Vector2 direction
+      Vector2 direction,
+      TeamName teamName
     )
     {
         var bulletInstance = (Bullet)_bullet!.Instance();
         bulletInstance.GlobalPosition = position;
         bulletInstance.Direction = direction;
+        bulletInstance.TeamName = teamName;
         AddChild(bulletInstance);
     }
 }

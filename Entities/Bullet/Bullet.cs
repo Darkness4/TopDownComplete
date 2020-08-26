@@ -7,7 +7,7 @@ public class Bullet : Area2D
 {
     private Timer _killTimer = null!;
 
-    private const int SPEED = 300;
+    private const int SPEED = 100;
     private Vector2 _direction = Vector2.Zero;
 
     /// <summary>
@@ -15,19 +15,16 @@ public class Bullet : Area2D
     /// </summary>
     public Vector2 Direction
     {
-        get
-        {
-            return _direction;
-        }
-
+        get => _direction;
         set
         {
             _direction = value;
             Rotation += Direction.Angle();
         }
     }
+    public TeamName TeamName = TeamName.UNDEFINED;
 
-    public override void _Process(float delta)
+    public override void _Ready()
     {
         _killTimer = GetNode<Timer>("KillTimer");
         _killTimer.Start();
@@ -43,19 +40,27 @@ public class Bullet : Area2D
         }
     }
 
+    /// <summary>
     /// <c>Bullet</c> has timed out.
+    /// </summary>
     public void _on_KillTimer_timeout()
     {
         QueueFree();
     }
 
+    /// <summary>
     /// <c>Bullet</c> has hit an object.
+    /// </summary>
     public void _on_Bullet_body_entered(Node body)
     {
         QueueFree();
-        if (body.HasMethod("HandleHit"))
+        if (
+          body is IHittable hittable &&
+          body is ITeamed teamed &&
+          TeamName != teamed.TeamName
+        )
         {
-            body.Call("HandleHit");
+            hittable.HandleHit();
         }
     }
 }

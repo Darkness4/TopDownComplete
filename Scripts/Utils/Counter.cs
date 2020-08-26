@@ -10,10 +10,7 @@ public abstract class Counter : Node2D
 
     public int Value
     {
-        get
-        {
-            return _value;
-        }
+        get => _value;
         set
         {
             _value = value;

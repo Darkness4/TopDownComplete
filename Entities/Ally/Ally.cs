@@ -1,23 +1,19 @@
 using Godot;
 
 /// <summary>
-/// Defines the <c>Enemy</c> behavior.
+/// Defines the <c>Ally</c> behavior.
 /// </summary>
-public class Enemy : RealisticBody2D, ITeamed, IHittable
+public class Ally : RealisticBody2D, ITeamed
 {
     private Health _health = null!;
     private Weapon _weapon = null!;
     private RayCast2D _lineOfSight = null!;
     private Intelligence _intelligence = null!;
 
-    private const int SPEED = 200;
-    private const float FRICTION = 0.2f;
-    private const float ACCELERATION = 0.1f;
-
     private Vector2 _velocity = Vector2.Zero;
 
     [Export]
-    private TeamName _teamName = TeamName.ENEMY;
+    private TeamName _teamName = TeamName.PLAYER;
     public TeamName TeamName
     {
         get => _teamName;
@@ -29,8 +25,6 @@ public class Enemy : RealisticBody2D, ITeamed, IHittable
         _health.Connect(nameof(Health.IsZero), this, nameof(Die));
 
         _weapon = GetNode<Weapon>("Weapon");
-        _weapon.Initialize(_teamName);
-
         _lineOfSight = GetNode<RayCast2D>("LineOfSight");
         _intelligence = GetNode<Intelligence>("Intelligence");
 
@@ -38,16 +32,16 @@ public class Enemy : RealisticBody2D, ITeamed, IHittable
     }
 
     /// <summary>
-    /// <c>Enemy</c> is hit by an object.
+    /// <c>Ally</c> is hit by an object.
     /// </summary>
     public void HandleHit()
     {
         _health.Decrease();
-        GD.Print($"Enemy: {_health}");
+        GD.Print($"Ally: {_health}");
     }
 
     /// <summary>
-    /// Kill the <c>Enemy</c>.
+    /// Kill the <c>Ally</c>.
     /// </summary>
     public void Die()
     {

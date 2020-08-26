@@ -13,10 +13,10 @@ public class Main : Node2D
         _bulletManager = GetNode<BulletManager>("BulletManager");
         _player = GetNode<Player>("Player");
 
-        _player.Connect(
-          nameof(Player.PlayerFiredBullet),
-          _bulletManager,
-          nameof(_bulletManager.SpawnBullet)
+        GlobalSignals.Instance.Connect(
+            nameof(GlobalSignals.BulletFired),
+            _bulletManager,
+            nameof(_bulletManager.SpawnBullet)
         );
     }
 }
