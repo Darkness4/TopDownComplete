@@ -21,6 +21,7 @@ public class Intelligence : Node2D
 
     private LinkedList<KinematicBody2D> _targets = new LinkedList<KinematicBody2D>();
 
+    // Patrol-related
     private Vector2 _origin = Vector2.Zero;
     private Vector2 _patrolLocation = Vector2.Zero;
     private bool _patrolLocationReached = false;
@@ -49,6 +50,9 @@ public class Intelligence : Node2D
     [Signal]
     public delegate void StateChanged(State state);
 
+    /// <summary>
+    /// <c>Intelligence</c> constructor.
+    /// </summary>
     public void Initialize(
         RealisticBody2D actor,
         Weapon weapon,
@@ -61,12 +65,6 @@ public class Intelligence : Node2D
 
         _weapon.Connect(nameof(Weapon.OutOfAmmo), this, nameof(HandleReload));
     }
-
-    public void HandleReload()
-    {
-        _weapon.StartReload();
-    }
-
 
     public override void _Ready()
     {
@@ -111,6 +109,14 @@ public class Intelligence : Node2D
             case State.UNITIALIZED:
                 break;
         }
+    }
+
+    /// <summary>
+    /// Reload on signal.
+    /// </summary>
+    public void HandleReload()
+    {
+        _weapon.StartReload();
     }
 
     public void _on_DetectionZone_body_entered(Node body)

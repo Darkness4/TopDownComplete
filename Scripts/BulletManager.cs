@@ -9,7 +9,7 @@ public class BulletManager : Node2D
     private PackedScene _bullet = null!;
 
     /// <summary>
-    /// Spawn a bullet
+    /// Spawn a <c>Bullet</c>
     /// </summary>
     public void SpawnBullet(
       Vector2 position,
@@ -18,9 +18,11 @@ public class BulletManager : Node2D
     )
     {
         var bulletInstance = (Bullet)_bullet!.Instance();
-        bulletInstance.GlobalPosition = position;
-        bulletInstance.Direction = direction;
-        bulletInstance.TeamName = teamName;
+        bulletInstance.Initialize(
+          position,
+          direction,
+          teamName
+        );
         AddChild(bulletInstance);
     }
 }

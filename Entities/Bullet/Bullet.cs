@@ -8,12 +8,11 @@ public class Bullet : Area2D
     private Timer _killTimer = null!;
 
     private const int SPEED = 100;
-    private Vector2 _direction = Vector2.Zero;
 
-    /// <summary>
-    /// Direction of the <c>Bullet</c>.
-    /// </summary>
-    public Vector2 Direction
+    private Vector2 _direction = Vector2.Zero;
+    private TeamName _teamName = TeamName.UNDEFINED;
+
+    private Vector2 Direction
     {
         get => _direction;
         set
@@ -22,7 +21,20 @@ public class Bullet : Area2D
             Rotation += Direction.Angle();
         }
     }
-    public TeamName TeamName = TeamName.UNDEFINED;
+
+    /// <summary>
+    /// <c>Bullet</c> constructor.
+    /// </summary>
+    public void Initialize(
+        Vector2 position,
+        Vector2 direction,
+        TeamName teamName
+    )
+    {
+        GlobalPosition = position;
+        Direction = direction;
+        _teamName = teamName;
+    }
 
     public override void _Ready()
     {
@@ -56,7 +68,7 @@ public class Bullet : Area2D
         if (
           body is IHittable hittable &&
           body is ITeamed teamed &&
-          TeamName != teamed.TeamName
+          _teamName != teamed.TeamName
         )
         {
             hittable.HandleHit();

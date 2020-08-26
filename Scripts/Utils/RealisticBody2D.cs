@@ -6,14 +6,22 @@ public class RealisticBody2D : KinematicBody2D
     private const float FRICTION = 0.2f;
     private const float ACCELERATION = 0.1f;
 
+    private const float ROTATION_WEIGHT = 0.1f;
+
     private Vector2 _velocity = Vector2.Zero;
 
+    /// <summary>
+    /// Rotate the body toward a <c>location</c>.
+    /// </summary>
     public void RotateToward(Vector2 location)
     {
         var angleToLocation = GlobalPosition.DirectionTo(location).Angle();
-        Rotation = Mathf.LerpAngle(Rotation, angleToLocation, 0.1f);
+        Rotation = Mathf.LerpAngle(Rotation, angleToLocation, ROTATION_WEIGHT);
     }
 
+    /// <summary>
+    /// Move the body toward a <c>location</c>.
+    /// </summary>
     public void MoveToward(Vector2 location)
     {
         var directionVelocity = GlobalPosition.DirectionTo(location) * SPEED;

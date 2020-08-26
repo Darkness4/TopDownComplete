@@ -5,6 +5,9 @@ public class GlobalSignals : Node
 {
     private static readonly Lazy<GlobalSignals> _instance = new Lazy<GlobalSignals>(() => new GlobalSignals());
 
+    /// <summary>
+    /// Get a lazy instance of <c>GlobalSignals</c>.
+    /// </summary>
     public static GlobalSignals Instance { get => _instance.Value; }
 
     private GlobalSignals() { }

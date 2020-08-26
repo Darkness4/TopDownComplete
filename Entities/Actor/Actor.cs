@@ -3,21 +3,19 @@ using Godot;
 /// <summary>
 /// Defines the <c>Actor</c> behavior.
 /// </summary>
-public class Actor : RealisticBody2D, ITeamed, IHittable
+public class Actor : RealisticBody2D, ITeamed, IHittable, IUnit
 {
     private Health _health = null!;
     private Weapon _weapon = null!;
     private RayCast2D _lineOfSight = null!;
     private Intelligence _intelligence = null!;
 
-    private const int SPEED = 200;
-    private const float FRICTION = 0.2f;
-    private const float ACCELERATION = 0.1f;
-
-    private Vector2 _velocity = Vector2.Zero;
-
     [Export]
-    private TeamName _teamName = TeamName.ENEMY;
+    private readonly TeamName _teamName = TeamName.ENEMY;
+
+    /// <summary>
+    /// <c>TeamName</c> of the <c>Actor</c>.
+    /// </summary>
     public TeamName TeamName
     {
         get => _teamName;

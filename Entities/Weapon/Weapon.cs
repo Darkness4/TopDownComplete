@@ -26,11 +26,17 @@ public class Weapon : Node2D
         _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
     }
 
+    /// <summary>
+    /// <c>Weapon</c> constructor
+    /// </summary>
     public void Initialize(TeamName teamName)
     {
         _teamName = teamName;
     }
 
+    /// <summary>
+    /// <c>Shoot</c> command.
+    /// </summary>
     public void Shoot()
     {
         if (_attackCooldown.IsStopped() &&
@@ -66,7 +72,6 @@ public class Weapon : Node2D
             }
             else
             {
-                // Click
                 _attackCooldown.Start();
 
                 EmitSignal(nameof(OutOfAmmo));
@@ -74,6 +79,9 @@ public class Weapon : Node2D
         }
     }
 
+    /// <summary>
+    /// Start reload animation.
+    /// </summary>
     public void StartReload()
     {
         if (_mags == 0)

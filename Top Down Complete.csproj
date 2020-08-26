@@ -60,13 +60,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Bullet\Bullet.cs" />
+    <Compile Include="Entities\CapturableBase\CapturableBase.cs" />
     <Compile Include="Scripts\Intelligence.cs" />
     <Compile Include="Scripts\Utils\IHittable.cs" />
     <Compile Include="Scripts\Utils\ITeam.cs" />
+    <Compile Include="Scripts\Utils\IUnit.cs" />
     <Compile Include="Entities\Weapon\Weapon.cs" />
     <Compile Include="Scripts\BulletManager.cs" />
     <Compile Include="Entities\Actor\Actor.cs" />
-    <Compile Include="Entities\Ally\Ally.cs" />
     <Compile Include="Entities\Health\Health.cs" />
     <Compile Include="Scripts\Globals\GlobalSignals.cs" />
     <Compile Include="Scripts\Utils\Counter.cs" />
