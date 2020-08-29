@@ -15,7 +15,7 @@ public class Player : KinematicBody2D, ITeamed, IHittable, IUnit
     private Vector2 _velocity = Vector2.Zero;
 
     [Export]
-    private TeamName _teamName = TeamName.PLAYER;
+    private readonly TeamName _teamName = TeamName.PLAYER;
 
     /// <summary>
     /// <c>TeamName</c> of the <c>Player</c>.
@@ -55,20 +55,17 @@ public class Player : KinematicBody2D, ITeamed, IHittable, IUnit
     }
 
     /// <summary>
-    /// Kill the <c>Player</c>.
-    /// </summary>
-    public void Die()
-    {
-        GetTree().ReloadCurrentScene();
-    }
-
-    /// <summary>
     /// <c>Player</c> is hit by an object.
     /// </summary>
     public void HandleHit()
     {
         _health.Decrease();
         GD.Print($"Player: {_health}");
+    }
+
+    private void Die()
+    {
+        GetTree().ReloadCurrentScene();
     }
 
     private void Move()

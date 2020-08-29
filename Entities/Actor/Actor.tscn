@@ -13,6 +13,7 @@ radius = 12.0
 "enemy",
 ]]
 script = ExtResource( 3 )
+_teamName = 2
 
 [node name="Sprite" type="Sprite" parent="."]
 position = Vector2( 12, 0 )

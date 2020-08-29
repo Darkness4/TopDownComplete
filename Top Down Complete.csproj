@@ -61,6 +61,8 @@
   <ItemGroup>
     <Compile Include="Entities\Bullet\Bullet.cs" />
     <Compile Include="Entities\CapturableBase\CapturableBase.cs" />
+    <Compile Include="Entities\UnitSpawner\SpawnPoint\SpawnPoint.cs" />
+    <Compile Include="Entities\UnitSpawner\UnitSpawner.cs" />
     <Compile Include="Scripts\CapturableBaseManager.cs" />
     <Compile Include="Entities\Intelligence\Intelligence.cs" />
     <Compile Include="Scripts\Utils\IHittable.cs" />

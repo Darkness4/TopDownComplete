@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/BulletManager.cs" type="Script" id=1]
 [ext_resource path="res://Entities/Player/Player.tscn" type="PackedScene" id=2]
@@ -7,7 +7,9 @@
 [ext_resource path="res://Entities/Actor/Actor.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Entities/Ally/Ally.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Entities/CapturableBase/CapturableBase.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Entities/UnitSpawner/UnitSpawner.cs" type="Script" id=8]
 [ext_resource path="res://Scripts/CapturableBaseManager.cs" type="Script" id=9]
+[ext_resource path="res://Entities/UnitSpawner/SpawnPoint/SpawnPoint.tscn" type="PackedScene" id=10]
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 3 )
@@ -20,38 +22,10 @@ _bullet = ExtResource( 4 )
 script = ExtResource( 9 )
 
 [node name="CapturableBase A" parent="CapturableBaseManager" instance=ExtResource( 7 )]
-position = Vector2( 928.629, 92.0692 )
+position = Vector2( 738.356, 170.557 )
 
 [node name="CapturableBase B" parent="CapturableBaseManager" instance=ExtResource( 7 )]
-position = Vector2( 1538.77, 81.5375 )
-
-[node name="CapturableBase C" parent="CapturableBaseManager" instance=ExtResource( 7 )]
-position = Vector2( 2179.53, 74.4198 )
-
-[node name="AllyMapAI" type="Node" parent="."]
-
-[node name="Ally" parent="AllyMapAI" instance=ExtResource( 6 )]
-position = Vector2( 434.281, 323.136 )
-
-[node name="Ally2" parent="AllyMapAI" instance=ExtResource( 6 )]
-position = Vector2( 422.388, 85.2943 )
-
-[node name="Ally3" parent="AllyMapAI" instance=ExtResource( 6 )]
-position = Vector2( 408.118, -126.385 )
-
-[node name="EnemyMapAI" type="Node" parent="."]
-
-[node name="Enemy" parent="EnemyMapAI" instance=ExtResource( 5 )]
-position = Vector2( 2545.97, -177.509 )
-rotation = 3.14159
-
-[node name="Enemy2" parent="EnemyMapAI" instance=ExtResource( 5 )]
-position = Vector2( 2545.97, 74.6024 )
-rotation = 3.14159
-
-[node name="Enemy3" parent="EnemyMapAI" instance=ExtResource( 5 )]
-position = Vector2( 2531.7, 314.822 )
-rotation = 3.14159
+position = Vector2( 1388.93, 162.404 )
 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 64, 64 )
@@ -59,3 +33,66 @@ position = Vector2( 64, 64 )
 [node name="Camera2D" type="Camera2D" parent="Player"]
 current = true
 smoothing_enabled = true
+
+[node name="AllySpawner" type="Node" parent="."]
+script = ExtResource( 8 )
+_teamName = 1
+_unit = ExtResource( 6 )
+
+[node name="UnitContainer" type="Node2D" parent="AllySpawner"]
+
+[node name="SpawnPoint" parent="AllySpawner" instance=ExtResource( 10 )]
+
+[node name="SpawnPoint2" parent="AllySpawner" instance=ExtResource( 10 )]
+position = Vector2( 220.15, 18.5133 )
+
+[node name="SpawnPoint3" parent="AllySpawner" instance=ExtResource( 10 )]
+position = Vector2( 212.591, 115.527 )
+
+[node name="SpawnPoint4" parent="AllySpawner" instance=ExtResource( 10 )]
+position = Vector2( 406.619, 39.9319 )
+
+[node name="SpawnPoint5" parent="AllySpawner" instance=ExtResource( 10 )]
+position = Vector2( 318.113, 154.597 )
+
+[node name="WaveSpawnTimer" type="Timer" parent="AllySpawner"]
+wait_time = 10.0
+one_shot = true
+
+[node name="SpawnCooldown" type="Timer" parent="AllySpawner"]
+wait_time = 0.1
+one_shot = true
+
+[node name="EnemySpawner" type="Node" parent="."]
+script = ExtResource( 8 )
+_teamName = 2
+_unit = ExtResource( 5 )
+
+[node name="UnitContainer" type="Node2D" parent="EnemySpawner"]
+
+[node name="SpawnPoint" parent="EnemySpawner" instance=ExtResource( 10 )]
+position = Vector2( 1676.62, -69.6812 )
+
+[node name="SpawnPoint2" parent="EnemySpawner" instance=ExtResource( 10 )]
+position = Vector2( 1769.85, 33.6323 )
+
+[node name="SpawnPoint3" parent="EnemySpawner" instance=ExtResource( 10 )]
+position = Vector2( 1603.54, 29.8526 )
+
+[node name="SpawnPoint4" parent="EnemySpawner" instance=ExtResource( 10 )]
+position = Vector2( 1719.46, 143.245 )
+
+[node name="SpawnPoint5" parent="EnemySpawner" instance=ExtResource( 10 )]
+position = Vector2( 1610.79, 139.478 )
+
+[node name="WaveSpawnTimer" type="Timer" parent="EnemySpawner"]
+wait_time = 10.0
+one_shot = true
+
+[node name="SpawnCooldown" type="Timer" parent="EnemySpawner"]
+wait_time = 0.1
+one_shot = true
+[connection signal="timeout" from="AllySpawner/WaveSpawnTimer" to="AllySpawner" method="_on_WaveSpawnTimer_timeout"]
+[connection signal="timeout" from="AllySpawner/SpawnCooldown" to="AllySpawner" method="_on_SpawnCooldown_timeout"]
+[connection signal="timeout" from="EnemySpawner/WaveSpawnTimer" to="EnemySpawner" method="_on_WaveSpawnTimer_timeout"]
+[connection signal="timeout" from="EnemySpawner/SpawnCooldown" to="EnemySpawner" method="_on_SpawnCooldown_timeout"]

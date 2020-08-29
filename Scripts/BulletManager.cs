@@ -6,7 +6,7 @@ using Godot;
 public class BulletManager : Node
 {
     [Export]
-    private PackedScene _bullet = null!;
+    private readonly PackedScene _bullet = null!;
 
     /// <summary>
     /// Spawn a <c>Bullet</c>
@@ -17,8 +17,8 @@ public class BulletManager : Node
       TeamName teamName
     )
     {
-        var bulletInstance = (Bullet)_bullet!.Instance();
-        bulletInstance.Initialize(
+        var bulletInstance = _bullet.Instance() as Bullet;
+        bulletInstance!.Initialize(
           position,
           direction,
           teamName

@@ -4,25 +4,21 @@ public class CapturableBaseManager : Node
 {
 
     [Signal]
-    public delegate void BaseCaptured(TeamName teamName);
+    public delegate void OnBaseCaptured();
 
     public override void _Ready()
     {
-        var currentBase = GetChildren().GetEnumerator();
-
-        do
+        foreach (var node in GetChildren())
         {
-            var node = currentBase.Current as CapturableBase;
-
-            if (node != null)
+            if (node is CapturableBase currentBase)
             {
-                node.Connect(nameof(CapturableBase.BaseCaptured), this, nameof(HandleBaseCaptured));
+                currentBase.Connect(nameof(CapturableBase.OnBaseCaptured), this, nameof(HandleBaseCaptured));
             }
-        } while (currentBase.MoveNext());
+        }
     }
 
-    private void HandleBaseCaptured(TeamName teamName)
+    private void HandleBaseCaptured(TeamName _)
     {
-        EmitSignal(nameof(BaseCaptured), teamName);
+        EmitSignal(nameof(OnBaseCaptured));
     }
 }

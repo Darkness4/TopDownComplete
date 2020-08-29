@@ -20,7 +20,7 @@ public class CapturableBase : Area2D, ITeamed
     private TeamName _teamName = TeamName.UNDEFINED;
 
     [Signal]
-    public delegate void BaseCaptured(TeamName teamName);
+    public delegate void OnBaseCaptured(TeamName teamName);
 
     /// <summary>
     /// <c>TeamName</c> of the <c>CapturableBase</c>.
@@ -30,8 +30,11 @@ public class CapturableBase : Area2D, ITeamed
         get => _teamName;
         set
         {
+            if (_teamName != value)
+            {
+                EmitSignal(nameof(OnBaseCaptured), _teamName);
+            }
             _teamName = value;
-            EmitSignal(nameof(BaseCaptured), _teamName);
             switch (_teamName)
             {
                 case TeamName.PLAYER:
@@ -53,7 +56,7 @@ public class CapturableBase : Area2D, ITeamed
         _sprite = GetNode<Sprite>("Sprite")!;
     }
 
-    public void _on_CapturableBase_body_entered(Node body)
+    private void _on_CapturableBase_body_entered(Node body)
     {
         if (body is ITeamed teamed && body is IUnit)
         {
@@ -69,7 +72,7 @@ public class CapturableBase : Area2D, ITeamed
         }
     }
 
-    public void _on_CapturableBase_body_exited(Node body)
+    private void _on_CapturableBase_body_exited(Node body)
     {
         if (body is ITeamed teamed && body is IUnit)
         {
@@ -130,7 +133,7 @@ public class CapturableBase : Area2D, ITeamed
         }
     }
 
-    public void _on_CaptureTimer_timeout()
+    private void _on_CaptureTimer_timeout()
     {
         TeamName = _capturingTeam;
     }

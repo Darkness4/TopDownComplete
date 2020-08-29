@@ -55,7 +55,7 @@ public class Bullet : Area2D
     /// <summary>
     /// <c>Bullet</c> has timed out.
     /// </summary>
-    public void _on_KillTimer_timeout()
+    private void _on_KillTimer_timeout()
     {
         QueueFree();
     }
@@ -63,7 +63,7 @@ public class Bullet : Area2D
     /// <summary>
     /// <c>Bullet</c> has hit an object.
     /// </summary>
-    public void _on_Bullet_body_entered(Node body)
+    private void _on_Bullet_body_entered(Node body)
     {
         if (
           body is IHittable hittable &&

@@ -9,10 +9,12 @@ public class Actor : RealisticBody2D, ITeamed, IHittable, IUnit
     private Weapon _weapon = null!;
     private RayCast2D _lineOfSight = null!;
     private Intelligence _intelligence = null!;
-    private CapturableBaseManager _capturableBaseManager = null!;
 
     [Export]
-    private readonly TeamName _teamName = TeamName.ENEMY;
+    private readonly TeamName _teamName = TeamName.UNDEFINED;
+
+    [Signal]
+    public delegate void OnDeath();
 
     /// <summary>
     /// <c>TeamName</c> of the <c>Actor</c>.
@@ -24,8 +26,6 @@ public class Actor : RealisticBody2D, ITeamed, IHittable, IUnit
 
     public override void _Ready()
     {
-        _capturableBaseManager = GetTree().CurrentScene.GetNode<CapturableBaseManager>("CapturableBaseManager")!;
-
         _health = GetNode<Health>("Health")!;
         _health.Connect(nameof(Health.IsZero), this, nameof(Die));
 
@@ -36,8 +36,6 @@ public class Actor : RealisticBody2D, ITeamed, IHittable, IUnit
         _intelligence = GetNode<Intelligence>("Intelligence")!;
 
         _intelligence.Initialize(this, _weapon, _lineOfSight);
-
-        _capturableBaseManager.Connect(nameof(CapturableBase.BaseCaptured), _intelligence, nameof(_intelligence.HandleBaseCapture));
     }
 
     /// <summary>
@@ -49,39 +47,10 @@ public class Actor : RealisticBody2D, ITeamed, IHittable, IUnit
         GD.Print($"Actor: {_health}");
     }
 
-    /// <summary>
-    /// Kill the <c>Actor</c>.
-    /// </summary>
-    public void Die()
+    private void Die()
     {
-        _intelligence.CurrentState = State.UNITIALIZED;
+        EmitSignal(nameof(OnDeath));
+        _intelligence.Uninitialize();
         QueueFree();
-    }
-
-    /// <summary>
-    /// Find the closest capturable base.
-    /// </summary>
-    public CapturableBase? FindClosestCapturableBase()
-    {
-        var currentBase = _capturableBaseManager.GetChildren().GetEnumerator();
-
-        var closestBase = currentBase.Current as CapturableBase;
-        float? minDistance = closestBase?.GlobalPosition.DistanceTo(GlobalPosition);
-
-        while (currentBase.MoveNext())
-        {
-            var node = currentBase.Current as CapturableBase;
-
-            if (node != null && node.TeamName != TeamName)
-            {
-                var distance = node.GlobalPosition.DistanceTo(GlobalPosition);
-                if (minDistance == null || distance < minDistance)
-                {
-                    minDistance = distance;
-                    closestBase = node;
-                }
-            }
-        }
-        return closestBase;
     }
 }
