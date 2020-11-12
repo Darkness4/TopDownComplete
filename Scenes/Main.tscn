@@ -1,22 +1,92 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://Scripts/BulletManager.cs" type="Script" id=1]
 [ext_resource path="res://Entities/Player/Player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Scripts/Main.cs" type="Script" id=3]
 [ext_resource path="res://Entities/Bullet/Bullet.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Entities/Actor/Actor.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Entities/Ally/Ally.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Entities/UnitSpawner/EnemySpawner.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Entities/UnitSpawner/AllySpawner.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Entities/CapturableBase/CapturableBase.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Entities/UnitSpawner/UnitSpawner.cs" type="Script" id=8]
+[ext_resource path="res://Entities/Actor/Actor.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Scripts/CapturableBaseManager.cs" type="Script" id=9]
 [ext_resource path="res://Entities/UnitSpawner/SpawnPoint/SpawnPoint.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Entities/Ally/Ally.tscn" type="PackedScene" id=11]
+[ext_resource path="res://assets/topdown-shooter/Tilesheet/tilesheet_complete.png" type="Texture" id=12]
+
+[sub_resource type="TileSet" id=1]
+0/name = "tilesheet_complete.png 0"
+0/texture = ExtResource( 12 )
+0/tex_offset = Vector2( 0, 0 )
+0/modulate = Color( 1, 1, 1, 1 )
+0/region = Rect2( 64, 0, 64, 64 )
+0/tile_mode = 1
+0/autotile/bitmask_mode = 0
+0/autotile/bitmask_flags = [  ]
+0/autotile/icon_coordinate = Vector2( 0, 0 )
+0/autotile/tile_size = Vector2( 32, 32 )
+0/autotile/spacing = 0
+0/autotile/occluder_map = [  ]
+0/autotile/navpoly_map = [  ]
+0/autotile/priority_map = [  ]
+0/autotile/z_index_map = [  ]
+0/occluder_offset = Vector2( 0, 0 )
+0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
+0/shapes = [  ]
+0/z_index = 0
+1/name = "tilesheet_complete.png 1"
+1/texture = ExtResource( 12 )
+1/tex_offset = Vector2( 0, 0 )
+1/modulate = Color( 1, 1, 1, 1 )
+1/region = Rect2( 0, 0, 64, 64 )
+1/tile_mode = 0
+1/occluder_offset = Vector2( 0, 0 )
+1/navigation_offset = Vector2( 0, 0 )
+1/shape_offset = Vector2( 0, 0 )
+1/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+1/shape_one_way = false
+1/shape_one_way_margin = 0.0
+1/shapes = [  ]
+1/z_index = 0
+2/name = "tilesheet_complete.png 2"
+2/texture = ExtResource( 12 )
+2/tex_offset = Vector2( 0, 0 )
+2/modulate = Color( 1, 1, 1, 1 )
+2/region = Rect2( 0, 0, 64, 64 )
+2/tile_mode = 1
+2/autotile/bitmask_mode = 0
+2/autotile/bitmask_flags = [  ]
+2/autotile/icon_coordinate = Vector2( 0, 0 )
+2/autotile/tile_size = Vector2( 32, 32 )
+2/autotile/spacing = 0
+2/autotile/occluder_map = [  ]
+2/autotile/navpoly_map = [  ]
+2/autotile/priority_map = [  ]
+2/autotile/z_index_map = [  ]
+2/occluder_offset = Vector2( 0, 0 )
+2/navigation_offset = Vector2( 0, 0 )
+2/shape_offset = Vector2( 0, 0 )
+2/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+2/shape_one_way = false
+2/shape_one_way_margin = 0.0
+2/shapes = [  ]
+2/z_index = 0
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 3 )
+_playerFactory = ExtResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 64, 64 )
+current = true
+smoothing_enabled = true
 
 [node name="BulletManager" type="Node" parent="."]
 script = ExtResource( 1 )
-_bullet = ExtResource( 4 )
+_bulletFactory = ExtResource( 4 )
 
 [node name="CapturableBaseManager" type="Node" parent="."]
 script = ExtResource( 9 )
@@ -27,19 +97,8 @@ position = Vector2( 738.356, 170.557 )
 [node name="CapturableBase B" parent="CapturableBaseManager" instance=ExtResource( 7 )]
 position = Vector2( 1388.93, 162.404 )
 
-[node name="Player" parent="." instance=ExtResource( 2 )]
-position = Vector2( 64, 64 )
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-current = true
-smoothing_enabled = true
-
-[node name="AllySpawner" type="Node" parent="."]
-script = ExtResource( 8 )
-_teamName = 1
-_unit = ExtResource( 6 )
-
-[node name="UnitContainer" type="Node2D" parent="AllySpawner"]
+[node name="AllySpawner" parent="." instance=ExtResource( 6 )]
+_unitFactory = ExtResource( 11 )
 
 [node name="SpawnPoint" parent="AllySpawner" instance=ExtResource( 10 )]
 
@@ -55,44 +114,24 @@ position = Vector2( 406.619, 39.9319 )
 [node name="SpawnPoint5" parent="AllySpawner" instance=ExtResource( 10 )]
 position = Vector2( 318.113, 154.597 )
 
-[node name="WaveSpawnTimer" type="Timer" parent="AllySpawner"]
-wait_time = 10.0
-one_shot = true
+[node name="EnemySpawner" parent="." instance=ExtResource( 5 )]
+_unitFactory = ExtResource( 8 )
 
-[node name="SpawnCooldown" type="Timer" parent="AllySpawner"]
-wait_time = 0.1
-one_shot = true
-
-[node name="EnemySpawner" type="Node" parent="."]
-script = ExtResource( 8 )
-_teamName = 2
-_unit = ExtResource( 5 )
-
-[node name="UnitContainer" type="Node2D" parent="EnemySpawner"]
-
-[node name="SpawnPoint" parent="EnemySpawner" instance=ExtResource( 10 )]
+[node name="SpawnPoint6" parent="EnemySpawner" instance=ExtResource( 10 )]
 position = Vector2( 1676.62, -69.6812 )
 
-[node name="SpawnPoint2" parent="EnemySpawner" instance=ExtResource( 10 )]
+[node name="SpawnPoint7" parent="EnemySpawner" instance=ExtResource( 10 )]
 position = Vector2( 1769.85, 33.6323 )
 
-[node name="SpawnPoint3" parent="EnemySpawner" instance=ExtResource( 10 )]
+[node name="SpawnPoint8" parent="EnemySpawner" instance=ExtResource( 10 )]
 position = Vector2( 1603.54, 29.8526 )
 
-[node name="SpawnPoint4" parent="EnemySpawner" instance=ExtResource( 10 )]
+[node name="SpawnPoint9" parent="EnemySpawner" instance=ExtResource( 10 )]
 position = Vector2( 1719.46, 143.245 )
 
-[node name="SpawnPoint5" parent="EnemySpawner" instance=ExtResource( 10 )]
+[node name="SpawnPoint10" parent="EnemySpawner" instance=ExtResource( 10 )]
 position = Vector2( 1610.79, 139.478 )
 
-[node name="WaveSpawnTimer" type="Timer" parent="EnemySpawner"]
-wait_time = 10.0
-one_shot = true
-
-[node name="SpawnCooldown" type="Timer" parent="EnemySpawner"]
-wait_time = 0.1
-one_shot = true
-[connection signal="timeout" from="AllySpawner/WaveSpawnTimer" to="AllySpawner" method="_on_WaveSpawnTimer_timeout"]
-[connection signal="timeout" from="AllySpawner/SpawnCooldown" to="AllySpawner" method="_on_SpawnCooldown_timeout"]
-[connection signal="timeout" from="EnemySpawner/WaveSpawnTimer" to="EnemySpawner" method="_on_WaveSpawnTimer_timeout"]
-[connection signal="timeout" from="EnemySpawner/SpawnCooldown" to="EnemySpawner" method="_on_SpawnCooldown_timeout"]
+[node name="Ground" type="TileMap" parent="."]
+tile_set = SubResource( 1 )
+format = 1

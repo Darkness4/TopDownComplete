@@ -7,6 +7,7 @@ public class Player : KinematicBody2D, ITeamed, IHittable, IUnit
 {
     private Health _health = null!;
     private Weapon _weapon = null!;
+    private RemoteTransform2D _cameraTransform = null!;
 
     private const int SPEED = 200;
     private const float FRICTION = 0.2f;
@@ -16,6 +17,9 @@ public class Player : KinematicBody2D, ITeamed, IHittable, IUnit
 
     [Export]
     private readonly TeamName _teamName = TeamName.PLAYER;
+
+    [Signal]
+    public delegate void OnDeath();
 
     /// <summary>
     /// <c>TeamName</c> of the <c>Player</c>.
@@ -27,6 +31,7 @@ public class Player : KinematicBody2D, ITeamed, IHittable, IUnit
 
     public override async void _Ready()
     {
+        _cameraTransform = GetNode<RemoteTransform2D>("CameraTransform");
         _health = GetNode<Health>("Health")!;
         _health.Connect(nameof(Health.IsZero), this, nameof(Die));
 
@@ -63,9 +68,15 @@ public class Player : KinematicBody2D, ITeamed, IHittable, IUnit
         GD.Print($"Player: {_health}");
     }
 
+    public void SetCameraTransform(NodePath cameraPath)
+    {
+        _cameraTransform.RemotePath = cameraPath;
+    }
+
     private void Die()
     {
-        GetTree().ReloadCurrentScene();
+        EmitSignal(nameof(OnDeath));
+        QueueFree();
     }
 
     private void Move()

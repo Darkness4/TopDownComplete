@@ -14,11 +14,11 @@ public abstract class Counter : Node
         set
         {
             _value = value;
+            EmitSignal(nameof(Changed));
             if (_value == 0)
             {
                 EmitSignal(nameof(IsZero));
             }
-            EmitSignal(nameof(Changed));
         }
     }
 

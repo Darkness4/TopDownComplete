@@ -14,7 +14,7 @@ public class UnitSpawner : Node, ITeamed
     private readonly TeamName _teamName = TeamName.UNDEFINED;
 
     [Export]
-    private readonly PackedScene _unit = null!;
+    private readonly PackedScene _unitFactory = null!;
 
     [Export]
     private readonly bool _initialSpawnEnabled = true;
@@ -65,7 +65,7 @@ public class UnitSpawner : Node, ITeamed
     {
         if (spawnPoint.IsFree && _unitToSpawn > 0)
         {
-            var actor = _unit.Instance() as Node2D;
+            var actor = _unitFactory.Instance() as Node2D;
             actor!.GlobalPosition = spawnPoint.GlobalPosition;
             actor!.Connect(nameof(Actor.OnDeath), this, nameof(HandleDeath));
             _unitContainer.AddChild(actor);
