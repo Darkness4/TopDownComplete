@@ -1,4 +1,4 @@
-public class Health : Counter
+public partial class Health : Counter
 {
     public override string ToString()
     {

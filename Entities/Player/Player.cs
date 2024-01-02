@@ -3,7 +3,7 @@ using Godot;
 /// <summary>
 /// Defines the <c>Player</c> behavior.
 /// </summary>
-public class Player : KinematicBody2D, ITeamed, IHittable, IUnit
+public partial class Player : CharacterBody2D, ITeamed, IHittable, IUnit
 {
     private Health _health = null!;
     private Weapon _weapon = null!;
@@ -13,13 +13,11 @@ public class Player : KinematicBody2D, ITeamed, IHittable, IUnit
     private const float FRICTION = 0.2f;
     private const float ACCELERATION = 0.1f;
 
-    private Vector2 _velocity = Vector2.Zero;
-
     [Export]
-    private readonly TeamName _teamName = TeamName.PLAYER;
+    private TeamName _teamName = TeamName.PLAYER;
 
     [Signal]
-    public delegate void OnDeath();
+    public delegate void OnDeathEventHandler();
 
     /// <summary>
     /// <c>TeamName</c> of the <c>Player</c>.
@@ -33,15 +31,15 @@ public class Player : KinematicBody2D, ITeamed, IHittable, IUnit
     {
         _cameraTransform = GetNode<RemoteTransform2D>("CameraTransform");
         _health = GetNode<Health>("Health")!;
-        _health.Connect(nameof(Health.IsZero), this, nameof(Die));
+        _health.Connect(Counter.SignalName.IsZero, new Callable(this, MethodName.Die));
 
         _weapon = GetNode<Weapon>("Weapon")!;
         _weapon.Initialize(_teamName);
 
-        await ToSignal(GetTree(), "idle_frame");
+        await ToSignal(GetTree(), "process_frame");
     }
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double delta)
     {
         Move();
         LookAt(GetGlobalMousePosition());
@@ -75,7 +73,7 @@ public class Player : KinematicBody2D, ITeamed, IHittable, IUnit
 
     private void Die()
     {
-        EmitSignal(nameof(OnDeath));
+        EmitSignal(SignalName.OnDeath);
         QueueFree();
     }
 
@@ -84,31 +82,31 @@ public class Player : KinematicBody2D, ITeamed, IHittable, IUnit
         var inputVector = Vector2.Zero;
         if (Input.IsActionPressed("move_up"))
         {
-            inputVector.y -= 1;
+            inputVector.Y -= 1;
         }
         if (Input.IsActionPressed("move_down"))
         {
-            inputVector.y += 1;
+            inputVector.Y += 1;
         }
         if (Input.IsActionPressed("move_left"))
         {
-            inputVector.x -= 1;
+            inputVector.X -= 1;
         }
         if (Input.IsActionPressed("move_right"))
         {
-            inputVector.x += 1;
+            inputVector.X += 1;
         }
 
         var inputVelocity = inputVector.Normalized() * SPEED;
 
         if (inputVelocity.Length() > 0)
         {
-            _velocity = _velocity.LinearInterpolate(inputVelocity, ACCELERATION);
+            Velocity = Velocity.Lerp(inputVelocity, ACCELERATION);
         }
         else
         {
-            _velocity = _velocity.LinearInterpolate(Vector2.Zero, FRICTION);
+            Velocity = Velocity.Lerp(Vector2.Zero, FRICTION);
         }
-        _velocity = MoveAndSlide(_velocity);
+        MoveAndSlide();
     }
 }

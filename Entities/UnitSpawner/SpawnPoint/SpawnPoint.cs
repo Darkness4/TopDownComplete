@@ -1,15 +1,15 @@
 using Godot;
 
-public class SpawnPoint : Position2D
+public partial class SpawnPoint : Marker2D
 {
     private int _bodyCount = 0;
 
-    private void _on_AntiCollisionArea_body_entered(Node body)
+    private void OnAntiCollisionAreaBodyEntered(Node2D body)
     {
         _bodyCount++;
     }
 
-    private void _on_AntiCollisionArea_body_exited(Node body)
+    private void OnAntiCollisionAreaBodyExited(Node2D body)
     {
         _bodyCount--;
     }

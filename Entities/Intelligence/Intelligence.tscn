@@ -19,6 +19,6 @@ one_shot = true
 
 [node name="CheckForClosestTimer" type="Timer" parent="."]
 one_shot = true
-[connection signal="body_entered" from="DetectionZone" to="." method="_on_DetectionZone_body_entered"]
-[connection signal="body_exited" from="DetectionZone" to="." method="_on_DetectionZone_body_exited"]
-[connection signal="timeout" from="PatrolTimer" to="." method="_on_PatrolTimer_timeout"]
+[connection signal="body_entered" from="DetectionZone" to="." method="OnDetectionZoneBodyEntered"]
+[connection signal="body_exited" from="DetectionZone" to="." method="OnDetectionZoneBodyExited"]
+[connection signal="timeout" from="PatrolTimer" to="." method="OnPatrolTimeTimeout"]

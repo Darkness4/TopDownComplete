@@ -1,16 +1,16 @@
 using Godot;
 using System.Collections.Generic;
 
-public class CapturableBase : Area2D, ITeamed
+public partial class CapturableBase : Area2D, ITeamed
 {
     private Timer _captureTimer = null!;
-    private Sprite _sprite = null!;
+    private Sprite2D _sprite = null!;
 
-    private readonly Color PLAYER_COLOR = new Color(0, 0.431373f, 0);
-    private readonly Color ENEMY_COLOR = new Color(0, 0.188725f, 0.431373f);
-    private readonly Color UNDEFINED_COLOR = new Color(1, 1, 1);
+    private readonly Color PLAYER_COLOR = new(0, 0.431373f, 0);
+    private readonly Color ENEMY_COLOR = new(0, 0.188725f, 0.431373f);
+    private readonly Color UNDEFINED_COLOR = new(1, 1, 1);
 
-    private readonly Dictionary<TeamName, int> unitCount = new Dictionary<TeamName, int>() {
+    private readonly Dictionary<TeamName, int> unitCount = new() {
         {TeamName.PLAYER, 0},
         {TeamName.ENEMY, 0}
     };
@@ -20,7 +20,7 @@ public class CapturableBase : Area2D, ITeamed
     private TeamName _teamName = TeamName.UNDEFINED;
 
     [Signal]
-    public delegate void OnBaseCaptured(TeamName teamName);
+    public delegate void OnBaseCapturedEventHandler(TeamName teamName);
 
     /// <summary>
     /// <c>TeamName</c> of the <c>CapturableBase</c>.
@@ -32,7 +32,7 @@ public class CapturableBase : Area2D, ITeamed
         {
             if (_teamName != value)
             {
-                EmitSignal(nameof(OnBaseCaptured), _teamName);
+                EmitSignal(SignalName.OnBaseCaptured, (int)_teamName);
             }
             _teamName = value;
             switch (_teamName)
@@ -53,10 +53,10 @@ public class CapturableBase : Area2D, ITeamed
     public override void _Ready()
     {
         _captureTimer = GetNode<Timer>("CaptureTimer")!;
-        _sprite = GetNode<Sprite>("Sprite")!;
+        _sprite = GetNode<Sprite2D>("Sprite2D")!;
     }
 
-    private void _on_CapturableBase_body_entered(Node body)
+    private void OnCapturableBaseBodyEntered(Node2D body)
     {
         if (body is ITeamed teamed && body is IUnit)
         {
@@ -72,7 +72,7 @@ public class CapturableBase : Area2D, ITeamed
         }
     }
 
-    private void _on_CapturableBase_body_exited(Node body)
+    private void OnCapturableBaseBodyExited(Node2D body)
     {
         if (body is ITeamed teamed && body is IUnit)
         {
@@ -133,7 +133,7 @@ public class CapturableBase : Area2D, ITeamed
         }
     }
 
-    private void _on_CaptureTimer_timeout()
+    private void OnCaptureTimerTimeout()
     {
         TeamName = _capturingTeam;
     }

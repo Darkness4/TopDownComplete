@@ -3,10 +3,10 @@ using Godot;
 /// <summary>
 /// Manages all in-game bullet.
 /// </summary>
-public class BulletManager : Node
+public partial class BulletManager : Node
 {
     [Export]
-    private readonly PackedScene _bulletFactory = null!;
+    private PackedScene _bulletFactory = null!;
 
     /// <summary>
     /// Spawn a <c>Bullet</c>
@@ -17,7 +17,7 @@ public class BulletManager : Node
       TeamName teamName
     )
     {
-        var bulletInstance = _bulletFactory.Instance() as Bullet;
+        var bulletInstance = _bulletFactory.Instantiate<Bullet>();
         bulletInstance!.Initialize(
           position,
           direction,

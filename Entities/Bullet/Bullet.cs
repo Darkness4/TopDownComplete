@@ -3,7 +3,7 @@ using Godot;
 /// <summary>
 /// Defines the <c>Bullet</c> behavior.
 /// </summary>
-public class Bullet : Area2D
+public partial class Bullet : Area2D
 {
     private Timer _killTimer = null!;
 
@@ -42,7 +42,7 @@ public class Bullet : Area2D
         _killTimer.Start();
     }
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double delta)
     {
         if (_direction != Vector2.Zero)
         {
@@ -55,7 +55,7 @@ public class Bullet : Area2D
     /// <summary>
     /// <c>Bullet</c> has timed out.
     /// </summary>
-    private void _on_KillTimer_timeout()
+    private void OnKillTimerTimeout()
     {
         QueueFree();
     }
@@ -63,7 +63,7 @@ public class Bullet : Area2D
     /// <summary>
     /// <c>Bullet</c> has hit an object.
     /// </summary>
-    private void _on_Bullet_body_entered(Node body)
+    private void OnBulletBodyEntered(Node2D body)
     {
         if (
           body is IHittable hittable &&

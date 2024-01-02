@@ -1,10 +1,10 @@
 using Godot;
 
-public class CapturableBaseManager : Node
+public partial class CapturableBaseManager : Node
 {
 
     [Signal]
-    public delegate void OnBaseCaptured();
+    public delegate void OnBaseCapturedEventHandler();
 
     public override void _Ready()
     {
@@ -12,13 +12,13 @@ public class CapturableBaseManager : Node
         {
             if (node is CapturableBase currentBase)
             {
-                currentBase.Connect(nameof(CapturableBase.OnBaseCaptured), this, nameof(HandleBaseCaptured));
+                currentBase.Connect(CapturableBase.SignalName.OnBaseCaptured, new Callable(this, MethodName.HandleBaseCaptured));
             }
         }
     }
 
     private void HandleBaseCaptured(TeamName _)
     {
-        EmitSignal(nameof(OnBaseCaptured));
+        EmitSignal(SignalName.OnBaseCaptured);
     }
 }

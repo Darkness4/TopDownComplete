@@ -3,7 +3,7 @@ using Godot;
 /// <summary>
 /// Defines the <c>Actor</c> behavior.
 /// </summary>
-public class Actor : RealisticBody2D, ITeamed, IHittable, IUnit
+public partial class Actor : RealisticBody2D, ITeamed, IHittable, IUnit
 {
     private Health _health = null!;
     private Weapon _weapon = null!;
@@ -11,10 +11,10 @@ public class Actor : RealisticBody2D, ITeamed, IHittable, IUnit
     private Intelligence _intelligence = null!;
 
     [Export]
-    private readonly TeamName _teamName = TeamName.UNDEFINED;
+    private TeamName _teamName = TeamName.UNDEFINED;
 
     [Signal]
-    public delegate void OnDeath();
+    public delegate void OnDeathEventHandler();
 
     /// <summary>
     /// <c>TeamName</c> of the <c>Actor</c>.
@@ -27,7 +27,7 @@ public class Actor : RealisticBody2D, ITeamed, IHittable, IUnit
     public override void _Ready()
     {
         _health = GetNode<Health>("Health")!;
-        _health.Connect(nameof(Health.IsZero), this, nameof(Die));
+        _health.Connect(Counter.SignalName.IsZero, new Callable(this, MethodName.Die));
 
         _weapon = GetNode<Weapon>("Weapon")!;
         _weapon.Initialize(_teamName);
@@ -49,7 +49,7 @@ public class Actor : RealisticBody2D, ITeamed, IHittable, IUnit
 
     private void Die()
     {
-        EmitSignal(nameof(OnDeath));
+        EmitSignal(SignalName.OnDeath);
         _intelligence.Uninitialize();
         QueueFree();
     }

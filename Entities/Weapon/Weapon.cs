@@ -1,9 +1,9 @@
 using Godot;
 
-public class Weapon : Node2D
+public partial class Weapon : Node2D
 {
-    private Position2D _endOfGun = null!;
-    private Position2D _gunDirection = null!;
+    private Marker2D _endOfGun = null!;
+    private Marker2D _gunDirection = null!;
     private Timer _attackCooldown = null!;
     private AnimationPlayer _animationPlayer = null!;
     private TeamName _teamName = TeamName.UNDEFINED;
@@ -16,12 +16,12 @@ public class Weapon : Node2D
     private bool _ammoInChamber = true;
 
     [Signal]
-    public delegate void OutOfAmmo();
+    public delegate void OutOfAmmoEventHandler();
 
     public override void _Ready()
     {
-        _endOfGun = GetNode<Position2D>("EndOfGunPosition2D")!;
-        _gunDirection = GetNode<Position2D>("GunDirectionPosition2D")!;
+        _endOfGun = GetNode<Marker2D>("EndOfGunPosition2D")!;
+        _gunDirection = GetNode<Marker2D>("GunDirectionPosition2D")!;
         _attackCooldown = GetNode<Timer>("AttackCooldown")!;
         _animationPlayer = GetNode<AnimationPlayer>("AnimationPlayer")!;
     }
@@ -46,14 +46,13 @@ public class Weapon : Node2D
             if (_ammoInChamber)
             {
                 // Shoot a bullet
-                var target = GetGlobalMousePosition();
                 var direction = _endOfGun.GlobalPosition.DirectionTo(_gunDirection.GlobalPosition).Normalized();
 
                 GlobalSignals.Instance.EmitSignal(
-                    nameof(GlobalSignals.BulletFired),
+                    GlobalSignals.SignalName.BulletFired,
                     _endOfGun.GlobalPosition,
                     direction,
-                    _teamName
+                    (int)_teamName
                 );
 
                 // Muzzle flash
@@ -74,7 +73,7 @@ public class Weapon : Node2D
             {
                 _attackCooldown.Start();
 
-                EmitSignal(nameof(OutOfAmmo));
+                EmitSignal(SignalName.OutOfAmmo);
             }
         }
     }

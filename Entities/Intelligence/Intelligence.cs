@@ -11,7 +11,7 @@ public enum IntelligenceState
 }
 
 
-public class Intelligence : Node
+public partial class Intelligence : Node
 {
     private Area2D _detectionZone = null!;
     private Weapon _weapon = null!;
@@ -24,7 +24,7 @@ public class Intelligence : Node
     private const int PATROL_RANGE = 100;
     private const int ACCEPTABLE_CAPTURE_RANGE = 10;
 
-    private LinkedList<KinematicBody2D> _targets = new LinkedList<KinematicBody2D>();
+    private readonly LinkedList<CharacterBody2D> _targets = new();
 
     // Patrol-related
     private Vector2 _origin = Vector2.Zero;
@@ -53,7 +53,7 @@ public class Intelligence : Node
             }
             _currentState = value;
             GD.Print($"Set State {CurrentState}");
-            EmitSignal(nameof(StateChanged), _currentState);
+            EmitSignal(SignalName.StateChanged, (int)_currentState);
         }
     }
 
@@ -63,7 +63,7 @@ public class Intelligence : Node
     }
 
     [Signal]
-    public delegate void StateChanged(IntelligenceState state);
+    public delegate void StateChangedEventHandler(IntelligenceState state);
 
     /// <summary>
     /// <c>Intelligence</c> constructor.
@@ -78,7 +78,7 @@ public class Intelligence : Node
         _weapon = weapon;
         _lineOfSight = lineOfSight;
 
-        _weapon.Connect(nameof(Weapon.OutOfAmmo), this, nameof(HandleReload));
+        _weapon.Connect(Weapon.SignalName.OutOfAmmo, new Callable(this, MethodName.HandleReload));
         _origin = _actor.GlobalPosition;
         CurrentState = IntelligenceState.GO_FOR_CAPTURE;
     }
@@ -89,10 +89,10 @@ public class Intelligence : Node
         _patrolTimer = GetNode<Timer>("PatrolTimer")!;
         _checkForClosestTimer = GetNode<Timer>("CheckForClosestTimer");
         _capturableBaseManager = GetTree().CurrentScene.GetNode<CapturableBaseManager>("CapturableBaseManager")!;
-        _capturableBaseManager.Connect(nameof(CapturableBase.OnBaseCaptured), this, nameof(HandleBaseCaptured));
+        _capturableBaseManager.Connect(CapturableBase.SignalName.OnBaseCaptured, new Callable(this, MethodName.HandleBaseCaptured));
     }
 
-    public override void _PhysicsProcess(float delta)
+    public override void _PhysicsProcess(double delta)
     {
         switch (CurrentState)
         {
@@ -126,20 +126,20 @@ public class Intelligence : Node
         }
     }
 
-    private void _on_DetectionZone_body_entered(Node body)
+    private void OnDetectionZoneBodyEntered(Node2D body)
     {
         if (body is ITeamed teamedBody && IsEnemyWith(teamedBody))
         {
             CurrentState = IntelligenceState.ENGAGE;
-            _targets.AddLast((KinematicBody2D)body);
+            _targets.AddLast((CharacterBody2D)body);
         }
     }
 
-    private void _on_DetectionZone_body_exited(Node body)
+    private void OnDetectionZoneBodyExited(Node2D body)
     {
         if (body is ITeamed teamedBody && IsEnemyWith(teamedBody))
         {
-            _targets.Remove((KinematicBody2D)body);
+            _targets.Remove((CharacterBody2D)body);
 
             if (_targets.Count == 0 && CurrentState != IntelligenceState.UNINITIALIZED)
             {
@@ -148,7 +148,7 @@ public class Intelligence : Node
         }
     }
 
-    private void _on_PatrolTimer_timeout()
+    private void OnPatrolTimeTimeout()
     {
         _patrolLocation = GeneratePatrolLocation();
 
@@ -183,9 +183,9 @@ public class Intelligence : Node
 
     private void OnEngageState()
     {
-        if (_targets.Count != 0)
+        if (_targets.Count > 0)
         {
-            var target = _targets.First.Value;
+            var target = _targets.First!.Value;
 
             _actor.RotateToward(target.GlobalPosition);
             if (_lineOfSight.GetCollider() is ITeamed teamedTarget && IsEnemyWith(teamedTarget)

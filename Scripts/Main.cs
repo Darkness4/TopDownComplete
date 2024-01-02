@@ -3,7 +3,7 @@ using Godot;
 /// <summary>
 /// This is the <c>Main</c> class.
 /// </summary>
-public class Main : Node2D
+public partial class Main : Node2D
 {
     private BulletManager _bulletManager = null!;
     private Camera2D _camera = null!;
@@ -17,9 +17,8 @@ public class Main : Node2D
         _camera = GetNode<Camera2D>("Camera2D")!;
 
         GlobalSignals.Instance.Connect(
-            nameof(GlobalSignals.BulletFired),
-            _bulletManager,
-            nameof(_bulletManager.SpawnBullet)
+            GlobalSignals.SignalName.BulletFired,
+            new Callable(_bulletManager, BulletManager.MethodName.SpawnBullet)
         );
 
         SpawnPlayer();
@@ -27,9 +26,9 @@ public class Main : Node2D
 
     private void SpawnPlayer()
     {
-        var player = _playerFactory.Instance() as Player;
+        var player = _playerFactory.Instantiate<Player>();
         AddChild(player);
         player!.SetCameraTransform(_camera.GetPath());
-        player.Connect(nameof(Player.OnDeath), this, nameof(SpawnPlayer));
+        player.Connect(Player.SignalName.OnDeath, new Callable(this, MethodName.SpawnPlayer));
     }
 }

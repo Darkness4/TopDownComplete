@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-public class UnitSpawner : Node, ITeamed
+public partial class UnitSpawner : Node, ITeamed
 {
     private Node2D _unitContainer = null!;
     private Timer _spawnCooldown = null!;
@@ -11,16 +11,16 @@ public class UnitSpawner : Node, ITeamed
     private SpawnPoint[] _spawnPoints = null!;
 
     [Export]
-    private readonly TeamName _teamName = TeamName.UNDEFINED;
+    private TeamName _teamName = TeamName.UNDEFINED;
 
     [Export]
-    private readonly PackedScene _unitFactory = null!;
+    private PackedScene _unitFactory = null!;
 
     [Export]
-    private readonly bool _initialSpawnEnabled = true;
+    private bool _initialSpawnEnabled = true;
 
     [Export]
-    private readonly int _numberOfUnits = 10;
+    private int _numberOfUnits = 10;
 
     private int _unitOnField = 0;
 
@@ -65,9 +65,9 @@ public class UnitSpawner : Node, ITeamed
     {
         if (spawnPoint.IsFree && _unitToSpawn > 0)
         {
-            var actor = _unitFactory.Instance() as Node2D;
+            var actor = _unitFactory.Instantiate<Node2D>();
             actor!.GlobalPosition = spawnPoint.GlobalPosition;
-            actor!.Connect(nameof(Actor.OnDeath), this, nameof(HandleDeath));
+            actor!.Connect(Actor.SignalName.OnDeath, new Callable(this, MethodName.HandleDeath));
             _unitContainer.AddChild(actor);
 
             _unitOnField++;
@@ -99,12 +99,12 @@ public class UnitSpawner : Node, ITeamed
         }
     }
 
-    private void _on_SpawnCooldown_timeout()
+    private void OnSpawnCooldownTimeout()
     {
         SpawnOnAllPoints();
     }
 
-    private void _on_WaveSpawnTimer_timeout()
+    private void OnWaveSpawnTimerTimeout()
     {
         _unitToSpawn = _numberOfUnits - _unitOnField;
         SpawnAllUnits();

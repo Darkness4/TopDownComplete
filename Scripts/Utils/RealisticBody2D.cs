@@ -1,14 +1,12 @@
 using Godot;
 
-public class RealisticBody2D : KinematicBody2D
+public partial class RealisticBody2D : CharacterBody2D
 {
     private const int SPEED = 200;
     private const float FRICTION = 0.2f;
     private const float ACCELERATION = 0.1f;
 
     private const float ROTATION_WEIGHT = 0.1f;
-
-    private Vector2 _velocity = Vector2.Zero;
 
     /// <summary>
     /// Rotate the body toward a <c>location</c>.
@@ -28,12 +26,12 @@ public class RealisticBody2D : KinematicBody2D
 
         if (directionVelocity.Length() > 0)
         {
-            _velocity = _velocity.LinearInterpolate(directionVelocity, ACCELERATION);
+            Velocity = Velocity.Lerp(directionVelocity, ACCELERATION);
         }
         else
         {
-            _velocity = _velocity.LinearInterpolate(Vector2.Zero, FRICTION);
+            Velocity = Velocity.Lerp(Vector2.Zero, FRICTION);
         }
-        _velocity = MoveAndSlide(_velocity);
+        MoveAndSlide();
     }
 }

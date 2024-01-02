@@ -17,5 +17,5 @@ one_shot = true
 [node name="SpawnCooldown" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
-[connection signal="timeout" from="WaveSpawnTimer" to="." method="_on_WaveSpawnTimer_timeout"]
-[connection signal="timeout" from="SpawnCooldown" to="." method="_on_SpawnCooldown_timeout"]
+[connection signal="timeout" from="WaveSpawnTimer" to="." method="OnWaveSpawnTimerTimeout"]
+[connection signal="timeout" from="SpawnCooldown" to="." method="OnSpawnCooldownTimeout"]

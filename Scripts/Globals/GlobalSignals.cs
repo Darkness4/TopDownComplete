@@ -1,9 +1,9 @@
 using Godot;
 using System;
 
-public class GlobalSignals : Node
+public partial class GlobalSignals : Node
 {
-    private static readonly Lazy<GlobalSignals> _instance = new Lazy<GlobalSignals>(() => new GlobalSignals());
+    private static readonly Lazy<GlobalSignals> _instance = new(() => new GlobalSignals());
 
     /// <summary>
     /// Get a lazy instance of <c>GlobalSignals</c>.
@@ -16,7 +16,7 @@ public class GlobalSignals : Node
     /// A bullet has been fired with the following parameters.
     /// </summary>
     [Signal]
-    public delegate void BulletFired(
+    public delegate void BulletFiredEventHandler(
         Vector2 position,
         Vector2 direction,
         TeamName teamName = TeamName.UNDEFINED

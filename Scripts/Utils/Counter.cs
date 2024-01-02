@@ -3,7 +3,7 @@ using Godot;
 /// <summary>
 /// A <c>Node2D</c> <c>Counter</c> class equipped with signals.
 /// </summary>
-public abstract class Counter : Node
+public partial class Counter : Node
 {
     [Export]
     private int _value = 2;
@@ -14,19 +14,19 @@ public abstract class Counter : Node
         set
         {
             _value = value;
-            EmitSignal(nameof(Changed));
+            EmitSignal(SignalName.Changed);
             if (_value == 0)
             {
-                EmitSignal(nameof(IsZero));
+                EmitSignal(SignalName.IsZero);
             }
         }
     }
 
     [Signal]
-    public delegate void IsZero();
+    public delegate void IsZeroEventHandler();
 
     [Signal]
-    public delegate void Changed();
+    public delegate void ChangedEventHandler();
 
     /// <summary>
     /// Decreases the <c>Counter</c>.
@@ -49,7 +49,7 @@ public abstract class Counter : Node
         return $"Counter: {Value}";
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         return Equals(obj as Counter);
     }
@@ -61,6 +61,6 @@ public abstract class Counter : Node
 
     public override int GetHashCode()
     {
-        return this.Value.GetHashCode();
+        return Value.GetHashCode();
     }
 }
